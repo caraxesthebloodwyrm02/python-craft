@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>Bright and powerful horizon landscape</title>
+  <desc>Merged brief: warm afternoon boat, hill, sun; distant zen slate-cerulean mountains and waterfall.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B8D4E8"/>
+      <stop offset="35%" style="stop-color:#87CEEB"/>
+      <stop offset="62%" style="stop-color:#E8D4A8"/>
+      <stop offset="78%" style="stop-color:#F4D03F"/>
+      <stop offset="100%" style="stop-color:#FCEabb"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFEF5"/>
+      <stop offset="25%" style="stop-color:#FFF8DC"/>
+      <stop offset="55%" style="stop-color:#F4D03F"/>
+      <stop offset="100%" style="stop-color:#F4D03F;stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="horizonGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFACD;stop-opacity:0.85"/>
+      <stop offset="100%" style="stop-color:#FFFACD;stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7EC8E3"/>
+      <stop offset="40%" style="stop-color:#5B9BD5"/>
+      <stop offset="100%" style="stop-color:#4B5E6E"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9BCB7E"/>
+      <stop offset="100%" style="stop-color:#556B2F"/>
+    </linearGradient>
+    <linearGradient id="mtFar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6A7F8C"/>
+      <stop offset="100%" style="stop-color:#3A4A56"/>
+    </linearGradient>
+    <linearGradient id="mtMid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5A6D7E"/>
+      <stop offset="100%" style="stop-color:#4B5E6E"/>
+    </linearGradient>
+    <filter id="mist" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+    </filter>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="vig" cx="50%" cy="40%" r="70%">
+      <stop offset="60%" style="stop-color:#000;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#1a2a35;stop-opacity:0.15"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+
+  <!-- Sun: bright, powerful, slightly above horizon -->
+  <circle cx="1480" cy="395" r="140" fill="url(#sun)" filter="url(#softGlow)"/>
+
+  <!-- Horizon power band -->
+  <rect x="0" y="520" width="1920" height="120" fill="url(#horizonGlow)"/>
+
+  <!-- Distant zen-blue range + waterfall (left) -->
+  <path d="M0 520 L0 380 L180 340 L320 400 L480 320 L620 380 L780 300 L920 360 L1080 310 L1200 350 L1280 320 L1400 380 L1600 340 L1920 400 L1920 520 Z" fill="url(#mtFar)" opacity="0.92"/>
+  <!-- Waterfall mist strip -->
+  <rect x="498" y="260" width="36" height="280" fill="#8FA3B0" opacity="0.55" filter="url(#mist)"/>
+  <rect x="502" y="270" width="22" height="260" fill="#B8D4E8" opacity="0.35" filter="url(#mist)"/>
+
+  <!-- Mid mountains (cooler silhouette) -->
+  <path d="M0 520 L0 430 L240 390 L400 450 L560 400 L720 460 L900 410 L1080 480 L1240 430 L1420 490 L1620 420 L1920 480 L1920 520 Z" fill="url(#mtMid)" opacity="0.88"/>
+
+  <!-- Bioluminescent hints (cool zone, sparse) -->
+  <g opacity="0.45">
+    <circle cx="220" cy="480" r="3" fill="#7EC8C8"/>
+    <circle cx="340" cy="465" r="2.5" fill="#A8E6CF"/>
+    <circle cx="280" cy="498" r="2" fill="#7EC8C8"/>
+    <circle cx="650" cy="455" r="2.5" fill="#A8E6CF"/>
+    <circle cx="720" cy="472" r="2" fill="#7EC8C8"/>
+  </g>
+
+  <!-- Water body -->
+  <rect x="0" y="520" width="1920" height="560" fill="url(#water)"/>
+
+  <!-- Sun reflection on water -->
+  <ellipse cx="1480" cy="600" rx="180" ry="28" fill="#F8E7A0" opacity="0.35"/>
+  <ellipse cx="1480" cy="635" rx="140" ry="18" fill="#F4D03F" opacity="0.2"/>
+
+  <!-- Sunlit hill (right) -->
+  <path d="M1100 520 Q1280 280 1920 340 L1920 520 Z" fill="url(#hill)"/>
+  <path d="M1200 520 Q1350 360 1920 400 L1920 520 Z" fill="#6B8E23" opacity="0.5"/>
+
+  <!-- Boat: afternoon, near foreground -->
+  <g transform="translate(720, 545)">
+    <ellipse cx="0" cy="35" rx="95" ry="14" fill="#3D2914" opacity="0.25"/>
+    <path d="M-85 8 Q0 28 85 8 L75 -2 Q0 12 -75 -2 Z" fill="#8B6914"/>
+    <path d="M-70 0 L70 0 L65 -8 L-65 -8 Z" fill="#C4A574"/>
+    <rect x="-8" y="-42" width="4" height="38" fill="#5D4E37"/>
+    <path d="M-4 -42 L52 -8 L-4 -8 Z" fill="#F5F5DC" opacity="0.9"/>
+  </g>
+
+  <!-- Light ripples -->
+  <g stroke="#FFF" stroke-width="1" opacity="0.12" fill="none">
+    <path d="M600 580 C700 575 800 585 900 580"/>
+    <path d="M620 605 C760 598 900 612 1040 602"/>
+    <path d="M580 640 C720 632 860 648 1000 638"/>
+  </g>
+
+  <!-- Atmospheric soft vignette (subtle) -->
+  <rect width="1920" height="1080" fill="url(#vig)"/>
+</svg>

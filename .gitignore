@@ -1,0 +1,44 @@
+# Mangrove template — Python 3.13+ / uv
+# Copy to .gitignore and extend per app. Global OS noise: ~/.config/git/ignore
+
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+.tox/
+.hypothesis/
+
+.uv/
+
+.env
+.env.*
+!.env.example
+!.env.template
+secrets/
+*.pem
+
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Generated outputs
+out/

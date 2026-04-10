@@ -1,0 +1,61 @@
+[project]
+name = "python-craft"
+version = "0.1.0"
+description = "CPU-first Python templates for transformer architecture LSP activation"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+foundation = [
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+]
+tokenization = [
+    "tokenizers>=0.15.0",
+    "tiktoken>=0.7.0",
+    "nltk>=3.9.0",
+    "sentencepiece>=0.2.0",
+]
+models_cpu = [
+    "torch>=2.4.0",
+    "transformers>=4.46.0",
+    "sentence-transformers>=5.2.0",
+]
+finetune = [
+    "datasets>=2.16.0",
+    "accelerate>=0.25.0",
+    "peft>=0.7.0",
+]
+orchestration = [
+    "pydantic>=2.4.0",
+    "langchain>=0.3.28",
+    "langchain-core>=0.3.45",
+    "langgraph>=0.2.0",
+]
+indexing = [
+    "faiss-cpu>=1.8.0",
+    "llama-cpp-python>=0.2.90",
+    "matplotlib>=3.8.0",
+]
+cuda_optional = [
+    "bitsandbytes>=0.45.0",
+]
+all = [
+    { include-group = "foundation" },
+    { include-group = "tokenization" },
+    { include-group = "models_cpu" },
+    { include-group = "finetune" },
+    { include-group = "orchestration" },
+    { include-group = "indexing" },
+]
+
+[build-system]
+requires = ["hatchling>=1.28.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/craft"]
+
+[tool.ruff]
+line-length = 120
