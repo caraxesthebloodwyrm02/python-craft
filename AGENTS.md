@@ -9,7 +9,7 @@
 
 | Command | Purpose |
 |--------|---------|
-| `make orbit-snapshot` | Status + `behind/ahead` + submodule gitlink for the four-root constellation (env overrides supported; see `scripts/oissnapshot.sh`). |
+| `make orbit-snapshot` | Status + `behind/ahead` + submodule gitlink for the four-root constellation. Prefer **`CASCADE_WORKSPACE_ROOT`** for the monorepo path; see `scripts/oissnapshot.sh`. |
 | `make audit` | `uv export` + `pip-audit` (OSV, interim ignore per doc) + Bandit on `src/craft`. |
 | `make audit-strict` | `uv export` + `pip-audit` with **no** CVE ignores (margin / red-team view). |
 

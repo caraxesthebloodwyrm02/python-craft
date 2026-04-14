@@ -7,9 +7,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 OIS_PYTHON_CRAFT_ROOT="${OIS_PYTHON_CRAFT_ROOT:-${REPO_ROOT}}"
-OIS_CASCADE_ROOT="${OIS_CASCADE_ROOT:-/home/caraxes/CascadeProjects}"
-OIS_GRID_ROOT="${OIS_GRID_ROOT:-${OIS_CASCADE_ROOT}/Projects/GRID-main}"
-OIS_VISION_ROOT="${OIS_VISION_ROOT:-${OIS_CASCADE_ROOT}/Projects/Vision}"
+# Monorepo root: prefer ecosystem-standard CASCADE_WORKSPACE_ROOT; OIS_CASCADE_ROOT overrides if set alone.
+_DEFAULT_CASCADE="/home/caraxes/CascadeProjects"
+CASCADE_WORKSPACE="${CASCADE_WORKSPACE_ROOT:-${OIS_CASCADE_ROOT:-${_DEFAULT_CASCADE}}}"
+OIS_GRID_ROOT="${OIS_GRID_ROOT:-${CASCADE_WORKSPACE}/Projects/GRID-main}"
+OIS_VISION_ROOT="${OIS_VISION_ROOT:-${CASCADE_WORKSPACE}/Projects/Vision}"
 
 print_repo() {
   local R="$1"
@@ -35,17 +37,18 @@ print_repo() {
 
 echo "OIS snapshot (git-grounded). Precedence: local git > submodule gitlink > OIS Part 2.1 > dashboards."
 echo "python-craft root: ${OIS_PYTHON_CRAFT_ROOT}"
+echo "CascadeProjects root: ${CASCADE_WORKSPACE}  (CASCADE_WORKSPACE_ROOT=${CASCADE_WORKSPACE_ROOT:-<unset>}, OIS_CASCADE_ROOT=${OIS_CASCADE_ROOT:-<unset>})"
 echo
 
-print_repo "${OIS_CASCADE_ROOT}" "CascadeProjects (hogsmade)"
+print_repo "${CASCADE_WORKSPACE}" "CascadeProjects (hogsmade)"
 print_repo "${OIS_GRID_ROOT}" "GRID-main (nested checkout)"
 print_repo "${OIS_VISION_ROOT}" "Vision"
 print_repo "${OIS_PYTHON_CRAFT_ROOT}" "python-craft (this repo)"
 
-if git -C "${OIS_CASCADE_ROOT}" rev-parse --git-dir >/dev/null 2>&1; then
+if git -C "${CASCADE_WORKSPACE}" rev-parse --git-dir >/dev/null 2>&1; then
   echo "--- Submodule gitlink (CascadeProjects) ---"
-  git -C "${OIS_CASCADE_ROOT}" ls-tree HEAD Projects/GRID-main 2>/dev/null || echo "(path not in HEAD tree)"
-  git -C "${OIS_CASCADE_ROOT}" submodule status Projects/GRID-main 2>/dev/null || true
+  git -C "${CASCADE_WORKSPACE}" ls-tree HEAD Projects/GRID-main 2>/dev/null || echo "(path not in HEAD tree)"
+  git -C "${CASCADE_WORKSPACE}" submodule status Projects/GRID-main 2>/dev/null || true
   echo
 fi
 

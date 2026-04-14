@@ -161,7 +161,7 @@ find "$REPO/.git/objects" -maxdepth 2 ! -user "$(id -un)" 2>/dev/null | head
 
 ### Pattern: discovery row (Phase 1)
 
-**Wired shortcut:** from `roots/python-craft`, run `make orbit-snapshot` (same four paths + submodule gitlink; env overrides in `scripts/oissnapshot.sh`).
+**Wired shortcut:** from `roots/python-craft`, run `make orbit-snapshot` (same four paths + submodule gitlink). Set **`CASCADE_WORKSPACE_ROOT`** to your `CascadeProjects` root; see `scripts/oissnapshot.sh` for fallbacks.
 
 ```bash
 for R in /home/caraxes/CascadeProjects /home/caraxes/CascadeProjects/Projects/GRID-main /home/caraxes/CascadeProjects/Projects/Vision /home/caraxes/roots/python-craft; do

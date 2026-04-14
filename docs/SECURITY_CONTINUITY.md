@@ -6,7 +6,7 @@ This document closes the loop between **continuous operations** (“the show mus
 
 | Command | Purpose |
 |--------|---------|
-| `make orbit-snapshot` | Same discovery shape as OIS Part 3: four roots + submodule gitlink (`scripts/oissnapshot.sh`). Override paths with `OIS_CASCADE_ROOT`, `OIS_GRID_ROOT`, `OIS_VISION_ROOT`, `OIS_PYTHON_CRAFT_ROOT` if needed. |
+| `make orbit-snapshot` | Same discovery shape as OIS Part 3: four roots + submodule gitlink (`scripts/oissnapshot.sh`). Set **`CASCADE_WORKSPACE_ROOT`** to your `CascadeProjects` checkout (matches Mangrove ecosystem env). Fallback: `OIS_CASCADE_ROOT`, then per-path `OIS_GRID_ROOT`, `OIS_VISION_ROOT`, `OIS_PYTHON_CRAFT_ROOT`. |
 | `make audit` | `uv export` + `pip-audit` (OSV, interim CVE ignore) + Bandit — matches PR CI posture. |
 | `make audit-strict` | `uv export` + `pip-audit` (OSV, **no** ignores) — red-team / margin view. |
 

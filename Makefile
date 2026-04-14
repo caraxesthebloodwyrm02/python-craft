@@ -3,6 +3,7 @@
 help:
 	@echo "Targets:"
 	@echo "  make orbit-snapshot  - git status + behind/ahead + submodule gitlink (OIS)"
+	@echo "                         (set CASCADE_WORKSPACE_ROOT for CascadeProjects path)"
 	@echo "  make audit           - uv export + pip-audit (OSV, interim ignore) + bandit"
 	@echo "  make audit-strict    - uv export + pip-audit (OSV, NO ignore; may exit 1)"
 
