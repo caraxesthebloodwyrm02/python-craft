@@ -124,7 +124,7 @@ All batches map to **OIS phases**. Execute **in order**; do not skip Phase 0.
 
 ### Part 2.1 — Current operational snapshot (checkpoint)
 
-Values below are a **checkpoint** from discovery on **2026-04-15** (`git status -sb`, `git rev-list --left-right --count '@{u}...HEAD'`). Re-run Part 3 “discovery row” before acting; numbers drift.
+Values below are a **checkpoint** from discovery on **2026-04-15 (post-publish / hogsmade sync)** (`git status -sb`, `git rev-list --left-right --count '@{u}...HEAD'`). Re-run Part 3 “discovery row” before acting; numbers drift.
 
 **Ground truth:** for these four paths, **local git** (status + `@{u}...HEAD`) overrides any external dashboard (for example seeds `ecosystem_scan` may aggregate a different root or lag submodule state).
 
@@ -132,18 +132,18 @@ Values below are a **checkpoint** from discovery on **2026-04-15** (`git status 
 
 | Repo | Branch / upstream | Behind / ahead | Working tree (summary) |
 |------|-------------------|----------------|-------------------------|
-| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **8 / 1** | Dirty: modified `Applications/glimpse-artifact/package.json`, `Components/shared-types/src/audit-client.ts`, **`Projects/GRID-main` (submodule)**, `Tools/MCPServers/echoes-server/tests/smoke.test.ts`, `Tools/MCPServers/eligibility-server/src/line-audit.ts`, `Tools/MCPServers/eligibility-server/tests/server-tools.test.ts`; untracked `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html`. |
-| `CascadeProjects/Projects/GRID-main` | `main` → `origin/main` | **0 / 1** | Clean tree; **one local commit** not yet on `origin/main` (orbit memo / OIS pointer commit). |
+| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **0 / 0** | **Synced** with remote after lock-in push. Dirty: **`Projects/GRID-main` (submodule gitlink)** vs checked-out GRID `main` (bump submodule pointer when you want monorepo to pin latest); untracked `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html`. |
+| `CascadeProjects/Projects/GRID-main` | `main` → `origin/main` | **0 / 0** | Clean; **pushed** (orbit memo / OIS alignment on `origin/main`). |
 | `CascadeProjects/Projects/Vision` | `main` → `origin/main` | **0 / 0** | Dirty: modified CONTRIBUTING, README, `pyproject.toml`, `vision_ui/cli.py`, tests, `uv.lock`; untracked `docs/`, `.github/workflows/ci-ocr-smoke.yml`, `tests/test_ui_ux_surface_reference.py`. |
-| `roots/python-craft` | `main` → `origin/main` | **0 / 1** | **Ahead one commit** vs `origin/main`; additionally **modified** `docs/INTEGRITY_SYNC_BATCH_ALGORITHM.md` (uncommitted doc edits — commit or discard before assuming “synced”). |
+| `roots/python-craft` | `main` → `origin/main` | **0 / 0** | Clean; **pushed** (OIS runbook commits on `origin/main`). |
 
 ### Part 2.2 — Next OIS invocation (worked example: CascadeProjects / hogsmade)
 
-**State:** `behind = 8`, `ahead = 1`, `dirty = yes` (see table above).
+**Typical state (historical):** `behind > 0`, `ahead ≥ 0`, `dirty = yes` — matrix row: **S = `stash_all`** (or **`commit_single_paths`** with explicit `P`). **S = `none`** → **HALT** (cannot rebase on a dirty tree).
 
-**Matrix row:** With `behind > 0` and `dirty`, use **S = `stash_all`** unless you intentionally **S = `commit_single_paths`** first with an explicit `P` (single concern). **S = `none`** → **HALT** (cannot rebase on a dirty tree).
+**Sequence:** Run **B0** if object ownership was ever suspect; then **Pattern: rebase train** (Part 3): stash WIP, `git pull --rebase origin hogsmade`, `git stash pop`, resolve conflicts, `git push origin hogsmade`.
 
-**Sequence:** Run **B0** if object ownership was ever suspect; then use **Pattern: rebase train** (Part 3): `git stash push -u`, `git pull --rebase origin hogsmade`, `git stash pop`, resolve conflicts, `git push origin hogsmade`.
+**Lock-in note (2026-04-15):** On this monorepo, `git stash push` returned **“Cannot save the current status”** (cause not pinned here); **`git pull --rebase --autostash origin hogsmade`** succeeded and preserved WIP, then **`git push origin hogsmade`** completed. Prefer manual stash when it works; use **`--autostash`** as a fallback when stash is broken.
 
 **Guard:** Do **not** run a submodule-only commit while the index still contains unrelated paths. Always `git diff --cached --stat` and confirm **only** `P` before `git commit`.
 
@@ -189,6 +189,15 @@ git stash pop
 git push origin hogsmade
 ```
 
+### Pattern: rebase train — `autostash` fallback (when `git stash push` fails)
+
+```bash
+cd /home/caraxes/CascadeProjects
+# If "Cannot save the current status" on stash, try:
+git pull --rebase --autostash origin hogsmade
+git push origin hogsmade
+```
+
 ---
 
 ## Part 4 — Finishing touches and final polish (pre-implementation checklist)
@@ -218,8 +227,8 @@ git push origin hogsmade
 
 ## Implementation order (ready)
 
-1. **Publish:** On `roots/python-craft`, commit or discard local edits to this file, then **git push** `origin/main` so the remote matches your intended checkpoint. After every push/pull affecting these repos, refresh **Part 2.1** using Part 3 discovery (do not rely on memory or stale dashboard rows).
+1. **Publish:** Leaf repos (`roots/python-craft`, `GRID-main`) — **git push** `origin/main` after verifying `origin/main..HEAD`. Monorepo **hogsmade** — `git pull --rebase` (+ stash or **`--autostash`**) then **git push** `origin/hogsmade`. After any material git event, refresh **Part 2.1** via Part 3 discovery.
 2. Run **B0** once per machine after any `sudo git` incident (or if `find` on `.git/objects` shows wrong owner).
-3. Execute **B1 → B5** for `CascadeProjects` on **hogsmade** until `ahead==0 && behind==0` (see **Part 2.2** for the current `8/1` + dirty case: stash → rebase → push). Update the orbit memo in **B5** after the train lands.
+3. Execute **B1 → B5** for `CascadeProjects` on **hogsmade** until `ahead==0 && behind==0` (lock-in achieved **2026-04-15**; see **Part 2.2** for stash vs **`--autostash`**). Submodule **gitlink** may still show dirty until you commit a pointer bump. Update the orbit memo in **B5** when facts change.
 4. Mirror one-line pointer in GRID/Vision docs (polish items 1–2).
 
