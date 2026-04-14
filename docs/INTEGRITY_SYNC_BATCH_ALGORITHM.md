@@ -124,7 +124,7 @@ All batches map to **OIS phases**. Execute **in order**; do not skip Phase 0.
 
 ### Part 2.1 — Current operational snapshot (checkpoint)
 
-Values below are a **checkpoint** from discovery on **2026-04-15 (post-publish / hogsmade sync)** (`git status -sb`, `git rev-list --left-right --count '@{u}...HEAD'`). Re-run Part 3 “discovery row” before acting; numbers drift.
+Values below are a **checkpoint** from discovery on **2026-04-15 (post-publish / hogsmade sync / submodule pin)** (`git status -sb`, `git rev-list --left-right --count '@{u}...HEAD'`). Re-run Part 3 “discovery row” before acting; numbers drift.
 
 **Ground truth:** for these four paths, **local git** (status + `@{u}...HEAD`) overrides any external dashboard (for example seeds `ecosystem_scan` may aggregate a different root or lag submodule state).
 
@@ -132,7 +132,7 @@ Values below are a **checkpoint** from discovery on **2026-04-15 (post-publish /
 
 | Repo | Branch / upstream | Behind / ahead | Working tree (summary) |
 |------|-------------------|----------------|-------------------------|
-| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **0 / 0** | **Synced** with remote after lock-in push. Dirty: **`Projects/GRID-main` (submodule gitlink)** vs checked-out GRID `main` (bump submodule pointer when you want monorepo to pin latest); untracked `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html`. |
+| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **0 / 0** | **Synced** with remote; **`Projects/GRID-main` gitlink pinned** to `c874ddb` (matches GRID `origin/main` at lock-in). Tracked tree clean; optional **untracked** `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html` remain operator choice. |
 | `CascadeProjects/Projects/GRID-main` | `main` → `origin/main` | **0 / 0** | Clean; **pushed** (orbit memo / OIS alignment on `origin/main`). |
 | `CascadeProjects/Projects/Vision` | `main` → `origin/main` | **0 / 0** | Dirty: modified CONTRIBUTING, README, `pyproject.toml`, `vision_ui/cli.py`, tests, `uv.lock`; untracked `docs/`, `.github/workflows/ci-ocr-smoke.yml`, `tests/test_ui_ux_surface_reference.py`. |
 | `roots/python-craft` | `main` → `origin/main` | **0 / 0** | Clean; **pushed** (OIS runbook commits on `origin/main`). |
@@ -229,6 +229,6 @@ git push origin hogsmade
 
 1. **Publish:** Leaf repos (`roots/python-craft`, `GRID-main`) — **git push** `origin/main` after verifying `origin/main..HEAD`. Monorepo **hogsmade** — `git pull --rebase` (+ stash or **`--autostash`**) then **git push** `origin/hogsmade`. After any material git event, refresh **Part 2.1** via Part 3 discovery.
 2. Run **B0** once per machine after any `sudo git` incident (or if `find` on `.git/objects` shows wrong owner).
-3. Execute **B1 → B5** for `CascadeProjects` on **hogsmade** until `ahead==0 && behind==0` (lock-in achieved **2026-04-15**; see **Part 2.2** for stash vs **`--autostash`**). Submodule **gitlink** may still show dirty until you commit a pointer bump. Update the orbit memo in **B5** when facts change.
+3. Execute **B1 → B5** for `CascadeProjects` on **hogsmade** until `ahead==0 && behind==0` (lock-in achieved **2026-04-15**; see **Part 2.2** for stash vs **`--autostash`**). Submodule **`Projects/GRID-main`** was bumped to **`c874ddb`** and **pushed** on `hogsmade`; re-run submodule-only flow when GRID `main` advances again. Update the orbit memo in **B5** when facts change.
 4. Mirror one-line pointer in GRID/Vision docs (polish items 1–2).
 
