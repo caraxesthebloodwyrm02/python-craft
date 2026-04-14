@@ -32,9 +32,15 @@ jobs:
         run: uv export --all-groups --format requirements.txt --no-hashes -o /tmp/python-craft-reqs.txt
 
       - name: pip-audit (OSV, strict)
+        id: pip_audit
         run: |
           set -o pipefail
           uv tool run pip-audit -r /tmp/python-craft-reqs.txt --skip-editable -s osv -f markdown | tee pip-audit-strict.md
+
+      - name: Bandit (weekly digest, advisory)
+        if: always()
+        continue-on-error: true
+        run: uv tool run bandit -r src/craft -ll -f txt | tee bandit-weekly.txt
 
       - name: Upload pip-audit report
         if: always()
@@ -42,3 +48,46 @@ jobs:
         with:
           name: pip-audit-strict
           path: pip-audit-strict.md
+
+      - name: Upload Bandit digest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-weekly
+          path: bandit-weekly.txt
+          if-no-files-found: ignore
+
+      - name: Post job summary (scheduled ops digest)
+        if: always()
+        env:
+          DOC_URL: ${{ format('{0}/{1}/blob/{2}/docs/SECURITY_CONTINUITY.md', github.server_url, github.repository, github.sha) }}
+          ROUTINE_URL: ${{ format('{0}/{1}/blob/{2}/docs/OPS_SCHEDULED_ROUTINE.md', github.server_url, github.repository, github.sha) }}
+        run: |
+          {
+            echo "## Scheduled ops digest — python-craft"
+            echo ""
+            echo "| Item | Detail |"
+            echo "|------|--------|"
+            echo "| UTC | $(date -u '+%Y-%m-%d %H:%M') |"
+            echo "| Workflow | \`security-audit-strict.yml\` |"
+            echo "| pip-audit step | ${{ steps.pip_audit.outcome }} |"
+            echo "| Ops routine (human cadence) | [OPS_SCHEDULED_ROUTINE.md](${ROUTINE_URL}) |"
+            echo "| Security margin | [SECURITY_CONTINUITY.md](${DOC_URL}) |"
+            echo "| Artifacts | \`pip-audit-strict\`, \`bandit-weekly\` |"
+            echo ""
+            if [[ -f pip-audit-strict.md ]]; then
+              echo "### pip-audit strict (excerpt)"
+              echo ""
+              echo '```'
+              head -n 50 pip-audit-strict.md
+              echo '```'
+              echo ""
+            fi
+            if [[ -f bandit-weekly.txt ]]; then
+              echo "### Bandit (excerpt)"
+              echo ""
+              echo '```'
+              head -n 40 bandit-weekly.txt
+              echo '```'
+            fi
+          } >> "${GITHUB_STEP_SUMMARY}"

@@ -59,3 +59,9 @@ packages = ["src/craft"]
 
 [tool.ruff]
 line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+# Env defaults must run before transformers / langchain imports.
+"src/craft/t3_transformers.py" = ["E402"]
+"src/craft/t4_finetune_surface.py" = ["E402"]
+"src/craft/t5_orchestration.py" = ["E402"]

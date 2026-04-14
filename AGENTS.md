@@ -13,6 +13,8 @@
 | `make audit` | `uv export` + `pip-audit` (OSV, interim ignore per doc) + Bandit on `src/craft`. |
 | `make audit-strict` | `uv export` + `pip-audit` with **no** CVE ignores (margin / red-team view). |
 
+**Ops cadence (CI summaries, weekly digest, release gate):** `docs/OPS_SCHEDULED_ROUTINE.md`.
+
 ## Precedence
 
 If narrative docs disagree with `git` or `git ls-tree` for submodule pins, **trust git** first, then reconcile docs.

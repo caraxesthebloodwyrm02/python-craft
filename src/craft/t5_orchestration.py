@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from .quiet_defaults import apply_quiet_env_defaults
+
+apply_quiet_env_defaults()
+
 from typing import TypedDict
 
 from langchain_core.runnables import RunnableLambda

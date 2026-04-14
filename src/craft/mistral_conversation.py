@@ -23,4 +23,5 @@ response = client.beta.conversations.start(
     inputs=inputs,
 )
 
-print(response)
+if os.environ.get("CRAFT_VERBOSE", "").lower() in ("1", "true", "yes"):
+    print(response)

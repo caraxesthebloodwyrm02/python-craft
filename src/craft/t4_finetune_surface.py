@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .quiet_defaults import apply_quiet_env_defaults
+
+apply_quiet_env_defaults()
+
 import torch
 from accelerate import Accelerator
 from datasets import Dataset
@@ -18,8 +22,9 @@ class FinetuneSurface:
 
 def build_lora_surface(model_name: str = "sshleifer/tiny-gpt2") -> FinetuneSurface:
     accelerator = Accelerator(cpu=True)
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float32)
+    # Demo template: unpinned Hub pulls; pin revision for production (SECURITY_CONTINUITY.md).
+    tokenizer = AutoTokenizer.from_pretrained(model_name)  # nosec B615
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float32)  # nosec B615
     lora_cfg = LoraConfig(r=8, lora_alpha=16, lora_dropout=0.05, bias="none", task_type=TaskType.CAUSAL_LM)
     peft_model = get_peft_model(model, lora_cfg)
     ds = Dataset.from_dict({"text": ["hello world", "transformers stack"]})

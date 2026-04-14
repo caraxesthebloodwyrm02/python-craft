@@ -1,5 +1,7 @@
 # Security continuity (interim posture + local rituals)
 
+**Broader cadence (PR vs weekly vs release):** [OPS_SCHEDULED_ROUTINE.md](./OPS_SCHEDULED_ROUTINE.md).
+
 This document closes the loop between **continuous operations** (“the show must go on”) and **known supply-chain risk**. It defines **reproducible local scans** (the contrasting margin: what we measured vs what we accept until upstream fixes land).
 
 ## Wired commands (repo root)
@@ -10,7 +12,7 @@ This document closes the loop between **continuous operations** (“the show mus
 | `make audit` | `uv export` + `pip-audit` (OSV, interim CVE ignore) + Bandit — matches PR CI posture. |
 | `make audit-strict` | `uv export` + `pip-audit` (OSV, **no** ignores) — red-team / margin view. |
 
-Scheduled strict CI: `.github/workflows/security-audit-strict.yml` (weekly + `workflow_dispatch`), uploads `pip-audit-strict.md` artifact.
+Scheduled strict CI: `.github/workflows/security-audit-strict.yml` (weekly + `workflow_dispatch`), uploads `pip-audit-strict` and `bandit-weekly` artifacts and a **Summary** on the run.
 
 **Rhyme-and-reasons (session scope):** prose checkpoint only — **code-backed symbol audit for external Semantic Officer modules is explicitly deferred** for this zoomed view; do not block shipping on that hunt.
 
@@ -66,6 +68,8 @@ Bandit may report **B615** — *unsafe Hugging Face Hub download without revisio
 - Prefer **`revision=`** (commit SHA or tag you trust) when downloading weights in reproducible pipelines.
 
 Current flagged surfaces (re-scan after edits): `src/craft/t3_transformers.py`, `src/craft/t4_finetune_surface.py`.
+
+For **local `make audit`** (Bandit exits non-zero on findings), demo `from_pretrained` lines use **`# nosec B615`** plus an adjacent comment pointing here — still prefer **`revision=`** when promoting beyond demos.
 
 ---
 
