@@ -2,6 +2,16 @@
 
 This document closes the loop between **continuous operations** (“the show must go on”) and **known supply-chain risk**. It defines **reproducible local scans** (the contrasting margin: what we measured vs what we accept until upstream fixes land).
 
+## Wired commands (repo root)
+
+| Command | Purpose |
+|--------|---------|
+| `make orbit-snapshot` | Same discovery shape as OIS Part 3: four roots + submodule gitlink (`scripts/oissnapshot.sh`). Override paths with `OIS_CASCADE_ROOT`, `OIS_GRID_ROOT`, `OIS_VISION_ROOT`, `OIS_PYTHON_CRAFT_ROOT` if needed. |
+| `make audit` | `uv export` + `pip-audit` (OSV, interim CVE ignore) + Bandit — matches PR CI posture. |
+| `make audit-strict` | `uv export` + `pip-audit` (OSV, **no** ignores) — red-team / margin view. |
+
+Scheduled strict CI: `.github/workflows/security-audit-strict.yml` (weekly + `workflow_dispatch`), uploads `pip-audit-strict.md` artifact.
+
 **Rhyme-and-reasons (session scope):** prose checkpoint only — **code-backed symbol audit for external Semantic Officer modules is explicitly deferred** for this zoomed view; do not block shipping on that hunt.
 
 ---

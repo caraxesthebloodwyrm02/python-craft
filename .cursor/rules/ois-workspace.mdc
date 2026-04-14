@@ -1,0 +1,25 @@
+---
+description: OIS git precedence, snapshot ritual, and instruction-asset fidelity
+globs:
+  - docs/**/*.md
+  - scripts/**/*
+  - Makefile
+---
+
+# OIS / workspace wiring
+
+## Precedence (drift disputes)
+
+1. Local `git` for the four OIS roots (see `docs/INTEGRITY_SYNC_BATCH_ALGORITHM.md` Part 2.1).
+2. Monorepo submodule gitlink: `git ls-tree HEAD Projects/GRID-main` inside `CascadeProjects` when that checkout exists.
+3. OIS Part 2.1 checkpoint table (dated rows).
+4. Orbit memo / external dashboards last — never treat seeds-only scores as proof of submodule alignment.
+
+## Rituals
+
+- Run `make orbit-snapshot` (or `bash scripts/oissnapshot.sh`) after material git events or before claiming ecosystem sync.
+- Run `make audit` locally for the same path as CI; `make audit-strict` for full OSV without interim CVE ignore (expect possible non-zero exit).
+
+## Rhyme-and-reasons / Semantic Officer
+
+- Do not invent or cite runtime symbols from `combined_space.py` / `control_room/*` unless those files are present in the active workspace and were read in this session. Prose checkpoints are fine; code-backed symbol audits are out-of-zoom unless the operator expands scope.

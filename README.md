@@ -43,6 +43,8 @@ If you want CUDA wheels specifically, add a CUDA index for `torch` when syncing.
 Interim supply-chain posture, reproducible `pip-audit` / Bandit rituals, and documented
 deferrals: see [docs/SECURITY_CONTINUITY.md](docs/SECURITY_CONTINUITY.md).
 
+Wired shortcuts: `make orbit-snapshot`, `make audit`, `make audit-strict` (see [AGENTS.md](AGENTS.md)).
+
 ## Gruff geometric tool
 
 The `craft.gruff_geometric_sketch` module includes:
