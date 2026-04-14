@@ -15,14 +15,14 @@ This document **defines the algorithm**, **batches all related work** into one s
 ### Inputs
 
 
-| Symbol | Meaning                                                                      |
-| ------ | ---------------------------------------------------------------------------- |
-| `R`    | Repository root (absolute path)                                              |
-| `B`    | Branch name (e.g. `hogsmade`, `main`)                                        |
-| `U`    | Upstream ref (e.g. `origin/hogsmade`)                                        |
-| `G`    | Quality gate profile: `lint_only` | `lint_and_test` | `lint_and_test_subset` |
-| `S`    | Stash policy: `none` | `stash_all` | `commit_single_paths`                   |
-| `P`    | Path filter for commits (optional list; never empty string = “all”)          |
+| Symbol | Meaning                                                             |
+| ------ | ------------------------------------------------------------------- |
+| `R`    | Repository root (absolute path)                                     |
+| `B`    | Branch name (e.g. `hogsmade`, `main`)                               |
+| `U`    | Upstream ref (e.g. `origin/hogsmade`)                               |
+| `G`    | Quality gate profile: `lint_only` \| `lint_and_test` \| `lint_and_test_subset` |
+| `S`    | Stash policy: `none` \| `stash_all` \| `commit_single_paths` |
+| `P`    | Path filter for commits (optional list; never empty string = “all”) |
 
 
 ### State vector (after each phase)
@@ -121,22 +121,27 @@ All batches map to **OIS phases**. Execute **in order**; do not skip Phase 0.
 | **B4** | 4     | Integration        | `git pull --rebase origin <branch>`; `git push`                                                                             |
 | **B5** | 5     | Reward             | GRID: RAG `where`/hybrid note + `~/.rag-sessions` check; update `ONWARD_ORBIT_MEMO` or successor; harness manifest if armed |
 
+
 ### Part 2.1 — Current operational snapshot (checkpoint)
 
 Values below are a **checkpoint** from discovery on **2026-04-15** (`git status -sb`, `git rev-list --left-right --count '@{u}...HEAD'`). Re-run Part 3 “discovery row” before acting; numbers drift.
 
+**Ground truth:** for these four paths, **local git** (status + `@{u}...HEAD`) overrides any external dashboard (for example seeds `ecosystem_scan` may aggregate a different root or lag submodule state).
+
+**Integer drift:** each doc commit bumps `ahead` for that repo—numbers in the table are **frozen at edit time**. Before acting, always re-run the Part 3 discovery pattern; never treat this table as a live substitute for `git`.
+
 | Repo | Branch / upstream | Behind / ahead | Working tree (summary) |
 |------|-------------------|----------------|-------------------------|
-| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **8 / 1** | Dirty: modified `Applications/glimpse-artifact/package.json`, `Components/shared-types/src/audit-client.ts`, `Tools/MCPServers/echoes-server/tests/smoke.test.ts`, `Tools/MCPServers/eligibility-server/src/line-audit.ts`, `Tools/MCPServers/eligibility-server/tests/server-tools.test.ts`; untracked `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html`. |
-| `CascadeProjects/Projects/GRID-main` | `main` → `origin/main` | **0 / 0** | Dirty: modified `docs/ONWARD_ORBIT_MEMO.md` only. |
+| `CascadeProjects` | `hogsmade` → `origin/hogsmade` | **8 / 1** | Dirty: modified `Applications/glimpse-artifact/package.json`, `Components/shared-types/src/audit-client.ts`, **`Projects/GRID-main` (submodule)**, `Tools/MCPServers/echoes-server/tests/smoke.test.ts`, `Tools/MCPServers/eligibility-server/src/line-audit.ts`, `Tools/MCPServers/eligibility-server/tests/server-tools.test.ts`; untracked `Projects/GATE/archived/envelope_commit-wave-2026-04.json`, `Projects/projects/viz/idea-risk-map.html`. |
+| `CascadeProjects/Projects/GRID-main` | `main` → `origin/main` | **0 / 1** | Clean tree; **one local commit** not yet on `origin/main` (orbit memo / OIS pointer commit). |
 | `CascadeProjects/Projects/Vision` | `main` → `origin/main` | **0 / 0** | Dirty: modified CONTRIBUTING, README, `pyproject.toml`, `vision_ui/cli.py`, tests, `uv.lock`; untracked `docs/`, `.github/workflows/ci-ocr-smoke.yml`, `tests/test_ui_ux_surface_reference.py`. |
-| `roots/python-craft` | `main` → `origin/main` | **0 / 0** | This runbook is **tracked** under `docs/` on `main` (checkpoint row captured pre-push; `git push` to publish). |
+| `roots/python-craft` | `main` → `origin/main` | **0 / 1** | **Ahead one commit** vs `origin/main`; additionally **modified** `docs/INTEGRITY_SYNC_BATCH_ALGORITHM.md` (uncommitted doc edits — commit or discard before assuming “synced”). |
 
 ### Part 2.2 — Next OIS invocation (worked example: CascadeProjects / hogsmade)
 
 **State:** `behind = 8`, `ahead = 1`, `dirty = yes` (see table above).
 
-**Matrix row:** With `behind > 0` and `dirty`, use **`S = stash_all`** unless you intentionally **`commit_single_paths`** first with an explicit `P` (single concern). **`S = none`** → **HALT** (cannot rebase on a dirty tree).
+**Matrix row:** With `behind > 0` and `dirty`, use **S = `stash_all`** unless you intentionally **S = `commit_single_paths`** first with an explicit `P` (single concern). **S = `none`** → **HALT** (cannot rebase on a dirty tree).
 
 **Sequence:** Run **B0** if object ownership was ever suspect; then use **Pattern: rebase train** (Part 3): `git stash push -u`, `git pull --rebase origin hogsmade`, `git stash pop`, resolve conflicts, `git push origin hogsmade`.
 
@@ -160,6 +165,8 @@ find "$REPO/.git/objects" -maxdepth 2 ! -user "$(id -un)" 2>/dev/null | head
 for R in /home/caraxes/CascadeProjects /home/caraxes/CascadeProjects/Projects/GRID-main /home/caraxes/CascadeProjects/Projects/Vision /home/caraxes/roots/python-craft; do
   echo "=== $R ==="
   git -C "$R" status -sb 2>/dev/null || echo "(not a git repo)"
+  U=$(git -C "$R" rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null) && \
+    git -C "$R" rev-list --left-right --count "$U...HEAD" 2>/dev/null | awk '{print "behind ahead:", $1, $2}'
 done
 ```
 
@@ -211,8 +218,8 @@ git push origin hogsmade
 
 ## Implementation order (ready)
 
-1. **Publish this runbook:** `docs/INTEGRITY_SYNC_BATCH_ALGORITHM.md` is on `roots/python-craft` `main` (docs-only commit). **`git push`** `origin/main` when you want the remote to carry the checkpoint; future edits refresh **Part 2.1** after discovery.
+1. **Publish:** On `roots/python-craft`, commit or discard local edits to this file, then **git push** `origin/main` so the remote matches your intended checkpoint. After every push/pull affecting these repos, refresh **Part 2.1** using Part 3 discovery (do not rely on memory or stale dashboard rows).
 2. Run **B0** once per machine after any `sudo git` incident (or if `find` on `.git/objects` shows wrong owner).
-3. Execute **B1 → B5** for `CascadeProjects` on **`hogsmade`** until `ahead==0 && behind==0` (see **Part 2.2** for the current `8/1` + dirty case: stash → rebase → push). Update the orbit memo in **B5** after the train lands.
+3. Execute **B1 → B5** for `CascadeProjects` on **hogsmade** until `ahead==0 && behind==0` (see **Part 2.2** for the current `8/1` + dirty case: stash → rebase → push). Update the orbit memo in **B5** after the train lands.
 4. Mirror one-line pointer in GRID/Vision docs (polish items 1–2).
 
