@@ -38,6 +38,11 @@ uv sync --group foundation --group tokenization --group models_cpu --group finet
 
 If you want CUDA wheels specifically, add a CUDA index for `torch` when syncing.
 
+## Security continuity
+
+Interim supply-chain posture, reproducible `pip-audit` / Bandit rituals, and documented
+deferrals: see [docs/SECURITY_CONTINUITY.md](docs/SECURITY_CONTINUITY.md).
+
 ## Gruff geometric tool
 
 The `craft.gruff_geometric_sketch` module includes:

@@ -1,0 +1,59 @@
+name: security-audit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-audit:
+    name: uv export + pip-audit (OSV)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Export locked requirements
+        run: uv export --all-groups --format requirements.txt --no-hashes -o /tmp/python-craft-reqs.txt
+
+      - name: pip-audit (OSV)
+        # Interim ignore: diskcache CVE-2025-69872 via llama-cpp-python — compensating controls
+        # and full remediation path are documented in docs/SECURITY_CONTINUITY.md.
+        run: >-
+          uv tool run pip-audit
+          -r /tmp/python-craft-reqs.txt
+          --skip-editable
+          -s osv
+          --ignore-vuln CVE-2025-69872
+
+  bandit-advisory:
+    name: bandit (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Bandit
+        run: uv tool run bandit -r src/craft -ll -f txt
