@@ -45,6 +45,13 @@ deferrals: see [docs/SECURITY_CONTINUITY.md](docs/SECURITY_CONTINUITY.md).
 
 Wired shortcuts: `make orbit-snapshot`, `make audit`, `make audit-strict` (see [AGENTS.md](AGENTS.md)).
 
+## Portfolio health methodology
+
+For the next cross-repo health report scoring pass, use
+[docs/PORTFOLIO_HEALTH_METHODOLOGY_REMEDIATION.md](docs/PORTFOLIO_HEALTH_METHODOLOGY_REMEDIATION.md)
+as the remediation checklist: absolute rubrics, bot/AI attribution, governance scoring, momentum
+gates, dormancy states, and reproducible raw exports.
+
 ## Gruff geometric tool
 
 The `craft.gruff_geometric_sketch` module includes:
