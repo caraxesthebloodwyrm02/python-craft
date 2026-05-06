@@ -28,10 +28,8 @@ from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 import numpy as np
 from matplotlib.animation import FuncAnimation, PillowWriter
-from matplotlib.colors import LinearSegmentedColormap
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -182,7 +180,6 @@ def _make_fig(palette: dict[str, Any]) -> tuple[plt.Figure, plt.Axes]:
 
 def _draw_static_layer(ax: plt.Axes, palette: dict[str, Any]) -> None:
     """Draw orbital rings, collinear spine, and G-score radial grid — once."""
-    bg = palette["bg"]
     arc_color = palette["arc"]
 
     # Radial grid (faint concentric circles)

@@ -21,12 +21,12 @@ Output: out/context_weave.html (self-contained, warm-toned, geolocation-aware)
 from __future__ import annotations
 
 import hashlib
-import json
 import math
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
+
+from craft.gridstral_profile import short_agent_id
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -322,7 +322,7 @@ COMMUNITY_REFS: list[CommunityRef] = [
         acknowledgement="Founded by ex-DeepMind/Meta researchers. "
         "Open-weight philosophy. Mistral Large, Codestral, Devstral, "
         "Pixtral, Magistral, Voxtral, Leanstral.",
-        safety_note="Gridstral agent (ag_019adec4) is the ecosystem's "
+        safety_note=f"Gridstral agent ({short_agent_id()}) is the ecosystem's "
         "first external AI participant — provenance tracked.",
     ),
 ]
@@ -1210,7 +1210,7 @@ footer .provenance {{ margin-top: 0.5rem; }}
     <p>Context Weave · python-craft · {CREATED_AT}</p>
     <p class="provenance">
       Prince/Irfan · caraxesthebloodwyrm02 · Uttara, Dhaka · CS TWU 2019<br>
-      Gridstral · ag_019adec4bd40 · Mistral AI · Paris, France · 2023<br>
+      Gridstral · {short_agent_id()} · Mistral AI · Paris, France · 2023<br>
       Fold: pre-monsoon × spring · {compute_fold_contrast("prince", "gridstral")["distance_km"]:,} km
     </p>
   </footer>

@@ -1,27 +1,13 @@
 """python-craft templates for first-class LSP activation."""
 
-from .gruff_geometric_sketch import (
-    CompassXSpec,
-    CompassSpec,
-    PaperSpec,
-    Render360Spec,
-    ShiftCycleSpec,
-    demo,
-    demo_360,
-    demo_compass_x,
-    demo_shift_cycles,
-    gruff_compass_x_contrast_render,
-    gruff_shift_cycles_render,
-    gruff_sketch,
-    gruff_wide_360_render,
+from .atlas_polar_field import (
+    MOOD_PALETTES,
+    SEEDS,
+    EntityPoint,
+    Trail,
 )
-from .sylveon_heatmap import (
-    CompassAddonSpec,
-    SylveonRun,
-    SylveonSpec,
-    TodoRecommendation,
-    demo_sylveon,
-    sylveon_render,
+from .atlas_polar_field import (
+    render as polar_field_render,
 )
 from .caraxes_fireworks import (
     DragonSpec,
@@ -33,13 +19,6 @@ from .caraxes_fireworks import (
     VolcanoSpec,
     demo_fireworks,
     fireworks_render,
-)
-from .atlas_polar_field import (
-    EntityPoint,
-    Trail,
-    SEEDS,
-    MOOD_PALETTES,
-    render as polar_field_render,
 )
 from .context_weave import (
     COMMUNITY_REFS,
@@ -56,8 +35,52 @@ from .context_weave import (
     ShiftCycle,
     TemporalFilter,
     compute_fold_contrast,
-    render as context_weave_render,
+)
+from .context_weave import (
     demo as demo_context_weave,
+)
+from .context_weave import (
+    render as context_weave_render,
+)
+from .gruff_geometric_sketch import (
+    CompassSpec,
+    CompassXSpec,
+    PaperSpec,
+    Render360Spec,
+    ShiftCycleSpec,
+    demo,
+    demo_360,
+    demo_compass_x,
+    demo_shift_cycles,
+    gruff_compass_x_contrast_render,
+    gruff_shift_cycles_render,
+    gruff_sketch,
+    gruff_wide_360_render,
+)
+from .gridstral_profile import (
+    GRIDSTRAL_AGENT_ID,
+    GRIDSTRAL_AGENT_VERSION,
+    GRIDSTRAL_LABEL,
+    short_agent_id,
+)
+from .routine_field_render import (
+    AttentionSpec,
+    GateSpec,
+    GovernanceSpec,
+    demo_routine_field,
+    render_attention_field,
+    render_gate_contrast,
+    render_governance,
+    render_phase_cycles,
+    render_unified_360,
+)
+from .sylveon_heatmap import (
+    CompassAddonSpec,
+    SylveonRun,
+    SylveonSpec,
+    TodoRecommendation,
+    demo_sylveon,
+    sylveon_render,
 )
 
 __all__ = [
@@ -70,6 +93,10 @@ __all__ = [
     "gruff_wide_360_render",
     "gruff_compass_x_contrast_render",
     "gruff_shift_cycles_render",
+    "GRIDSTRAL_AGENT_ID",
+    "GRIDSTRAL_AGENT_VERSION",
+    "GRIDSTRAL_LABEL",
+    "short_agent_id",
     "demo",
     "demo_360",
     "demo_compass_x",
@@ -112,4 +139,14 @@ __all__ = [
     "compute_fold_contrast",
     "context_weave_render",
     "demo_context_weave",
+    # routine_field_render
+    "GovernanceSpec",
+    "AttentionSpec",
+    "GateSpec",
+    "render_governance",
+    "render_attention_field",
+    "render_gate_contrast",
+    "render_phase_cycles",
+    "render_unified_360",
+    "demo_routine_field",
 ]

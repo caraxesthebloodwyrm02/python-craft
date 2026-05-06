@@ -13,12 +13,11 @@ Output: GIF only, standalone in ``out/``.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from matplotlib.animation import FuncAnimation
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -168,7 +167,6 @@ def _draw_volcano(
 
     Returns (static artists, burst params for animation re-use).
     """
-    hw = spec.width / 2.0
     # Cone polygon
     cone_verts = [
         (vol.cone_peak_x - vol.cone_half_width, vol.cone_base_y),
