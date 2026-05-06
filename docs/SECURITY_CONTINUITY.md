@@ -73,8 +73,17 @@ For **local `make audit`** (Bandit exits non-zero on findings), demo `from_pretr
 
 ---
 
+## CI / PR posture: strict gate removal
+
+**T3 completed:** The `--ignore-vuln CVE-2025-69872` flag has been removed from `make audit` (Makefile line 14), aligning PR CI with the strict weekly audit.
+
+- `make audit` now runs **without ignores** — same posture as `make audit-strict`, but with text output instead of markdown.
+- `make audit-strict` remains unchanged (weekly scheduled CI, markdown output, may exit 1 on findings).
+
 ## When to refresh this margin
 
 - After any **`uv.lock`** change touching `llama-cpp-python`, `torch`, or other high-churn deps.
 - Before tagging a release or publishing templates to a wider audience.
 - After adopting a **new optional group** (`cuda_optional`, etc.).
+
+**Revert to interim posture only if:** `pip-audit` reports CVE-2025-69872 as unpatched and you need to accept the risk while waiting for an upstream fix. In that case, restore `--ignore-vuln CVE-2025-69872` to `make audit` and document the justification in this section.
