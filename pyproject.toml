@@ -3,8 +3,27 @@ name = "python-craft"
 version = "0.1.0"
 description = "CPU-first Python templates for transformer architecture LSP activation"
 readme = "README.md"
+license = "Apache-2.0"
 requires-python = ">=3.13"
+authors = [
+    {name = "shinychoes"}
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/shinychoes/python-craft"
+Repository = "https://github.com/shinychoes/python-craft"
+Issues = "https://github.com/shinychoes/python-craft/issues"
 
 [dependency-groups]
 foundation = [

@@ -42,3 +42,10 @@ secrets/
 
 # Generated outputs
 out/
+
+# AI tool artifacts
+.claude/
+.cursor/
+.codex/
+.ollama/
+.antigravity/
